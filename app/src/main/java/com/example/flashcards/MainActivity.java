@@ -22,6 +22,18 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
         );
+
+        // click answer to show question
+        findViewById(R.id.flashcard_answer).setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        findViewById(R.id.flashcard_answer).setVisibility(view.INVISIBLE);
+                        findViewById(R.id.flashcard_question).setVisibility(view.VISIBLE);
+                    }
+                }
+        );
+
     }
 
 }
