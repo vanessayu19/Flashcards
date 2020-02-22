@@ -9,4 +9,7 @@
     <color name="mediumBlue">#71A5E3</color>
     <color name="paleGreen">#B2D6BB</color>
     <color name="mediumGreen">#76B586</color>
+    <color name="pastelYellow">#FAEECD</color>
+    <color name="pastelGreen">#CDFACF</color>
+    <color name="errorRed">#F76A6A</color>
 </resources>

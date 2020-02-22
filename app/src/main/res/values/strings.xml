@@ -2,4 +2,8 @@
     <string name="app_name">Flashcards</string>
     <string name="card_q">Who is the 44th President of the United States?</string>
     <string name="card_a">Barack Obama</string>
+    <string name="reset">reset</string>
+    <string name="answer1">Bill Clinton</string>
+    <string name="answer2">George H. W. Bush</string>
+    <string name="answer3">Barack Obama</string>
 </resources>

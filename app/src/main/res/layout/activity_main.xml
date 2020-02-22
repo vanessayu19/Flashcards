@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -12,7 +13,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="25dp"
         android:layout_marginRight="20dp"
         android:layout_marginBottom="20dp"
         android:background="@drawable/question_background"
@@ -27,10 +28,10 @@
         android:id="@+id/flashcard_answer"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="25dp"
         android:layout_marginRight="20dp"
         android:layout_marginBottom="20dp"
         android:background="@drawable/answer_background"
@@ -41,5 +42,81 @@
         android:textColor="@color/black"
         android:textSize="40sp"
         android:visibility="invisible" />
+
+    <TextView
+        android:id="@+id/answer1"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="45dp"
+        android:layout_marginTop="250dp"
+        android:layout_marginRight="45dp"
+        android:layout_marginBottom="20dp"
+        android:gravity="center"
+        android:text="@string/answer1"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:background="@color/pastelYellow" />
+
+    <TextView
+        android:id="@+id/answer2"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="45dp"
+        android:layout_marginTop="340dp"
+        android:layout_marginRight="45dp"
+        android:layout_marginBottom="20dp"
+        android:gravity="center"
+        android:text="@string/answer2"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:background="@color/pastelYellow" />
+
+    <TextView
+        android:id="@+id/answer3"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="45dp"
+        android:layout_marginTop="430dp"
+        android:layout_marginRight="45dp"
+        android:layout_marginBottom="50dp"
+        android:gravity="center"
+        android:text="@string/answer3"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:background="@color/pastelYellow" />
+
+    <ImageView
+        android:id="@+id/visible"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="45dp"
+        android:layout_marginTop="500dp"
+        android:layout_marginRight="45dp"
+        android:layout_marginBottom="200dp"
+        app:srcCompat="@drawable/visible" />
+
+    <ImageView
+        android:id="@+id/invisible"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="45dp"
+        android:layout_marginTop="500dp"
+        android:layout_marginRight="45dp"
+        android:layout_marginBottom="200dp"
+        android:visibility="invisible"
+        app:srcCompat="@drawable/invisible" />
 
 </RelativeLayout>
