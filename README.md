@@ -6,7 +6,7 @@
 This app currently holds a question card that when clicked will show the answer to that question, and gives the user the option to view answer choices (that change color when clicked depedning on if they are the correct answer or not) or to make them invisible.
 
 ### App Walk-though
-<http://g.recordit.co/vxRwhOnUYT.gif><br>
+<img src="http://g.recordit.co/vxRwhOnUYT.gif" width=200><br>
 
 ## Required
 - [x] Create New Project in Android Studio
