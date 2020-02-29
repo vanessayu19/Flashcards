@@ -2,6 +2,7 @@ package com.example.flashcards;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -34,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
             new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Log.d("card", "clikcing answer");
+                    Log.d("card", "clicking answer");
 
                     findViewById(R.id.flashcard_answer).setVisibility(view.INVISIBLE);
                     findViewById(R.id.flashcard_question).setVisibility(view.VISIBLE);
@@ -122,6 +123,15 @@ public class MainActivity extends AppCompatActivity {
                     // change color to red
                     findViewById(R.id.answer3).setBackgroundColor(getResources().getColor(R.color.errorRed));
                 }
+            }
+        });
+
+        // go to a new page
+        findViewById(R.id.add).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, AddCardActivity.class);
+                MainActivity.this.startActivityForResult(intent,1);
             }
         });
     };
