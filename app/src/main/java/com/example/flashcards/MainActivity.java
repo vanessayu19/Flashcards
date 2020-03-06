@@ -135,4 +135,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     };
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1) {
+            String newQ = data.getExtras().getString("newQ");
+            ((TextView) findViewById(R.id.flashcard_question)).setText(newQ);
+
+            String newA = data.getExtras().getString("newA");
+            ((TextView) findViewById(R.id.flashcard_answer)).setText(newA);
+        }
+    }
 }

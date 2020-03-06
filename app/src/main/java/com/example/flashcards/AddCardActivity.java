@@ -30,20 +30,14 @@ public class AddCardActivity extends AppCompatActivity {
 
                 // create data to send back when this activity is closed
                 Intent data = new Intent();
-                data. putExtra("newQ", getResources().getString(R.string.new_q));
-                data.putExtra("newA", getResources().getString(R.string.new_a));
+                String qData = ((EditText) findViewById(R.id.newQuestion)).getText().toString();
+                String aData = ((EditText) findViewById(R.id.newAnswer)).getText().toString();
+
+                data. putExtra("newQ", qData);
+                data.putExtra("newA", aData);
                 setResult(RESULT_OK, data);
                 finish();
             }
         });
     }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 1) {
-            String newQ = data.getExtras().getString("newQ");
-            String newA = data.getExtras().getString("newA");
-        }
-    }
-
 }
