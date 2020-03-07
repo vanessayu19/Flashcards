@@ -4,8 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class AddCardActivity extends AppCompatActivity {
 
@@ -26,17 +29,24 @@ public class AddCardActivity extends AppCompatActivity {
         findViewById(R.id.save).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((EditText) findViewById(R.id.newQuestion)).getText().toString();
-
-                // create data to send back when this activity is closed
-                Intent data = new Intent();
                 String qData = ((EditText) findViewById(R.id.newQuestion)).getText().toString();
                 String aData = ((EditText) findViewById(R.id.newAnswer)).getText().toString();
 
-                data. putExtra("newQ", qData);
-                data.putExtra("newA", aData);
-                setResult(RESULT_OK, data);
-                finish();
+                if (TextUtils.isEmpty(qData) || TextUtils.isEmpty((aData))) {
+                    Toast message = Toast.makeText(
+                            getApplicationContext(), "Must fill in both Question and Answer!",
+                            Toast.LENGTH_SHORT);
+                    // message.setGravity(Gravity.BOTTOM|Gravity.CENTER, 0, 0);
+                    message.show();
+                } else {
+                    // create data to send back when this activity is closed
+                    Intent data = new Intent();
+
+                    data.putExtra("newQ", qData);
+                    data.putExtra("newA", aData);
+                    setResult(RESULT_OK, data);
+                    finish();
+                }
             }
         });
     }

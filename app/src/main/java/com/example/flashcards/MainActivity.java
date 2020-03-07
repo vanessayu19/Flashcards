@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity {
@@ -138,12 +140,16 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 1) {
+        if (requestCode == 1 && resultCode == RESULT_OK) {
             String newQ = data.getExtras().getString("newQ");
             ((TextView) findViewById(R.id.flashcard_question)).setText(newQ);
 
             String newA = data.getExtras().getString("newA");
             ((TextView) findViewById(R.id.flashcard_answer)).setText(newA);
+
+            // display Snackbar notification
+            Snackbar.make(findViewById(R.id.flashcard_question), "New card successfully created!",
+                    Snackbar.LENGTH_SHORT).show();
         }
     }
 }
