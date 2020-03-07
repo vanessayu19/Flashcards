@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddCardActivity">
+    tools:context=".EditCurrentCardActivity">
 
     <ImageView
         android:id="@+id/close"
@@ -18,9 +18,9 @@
         tools:layout_editor_absoluteY="676dp" />
 
     <EditText
-        android:id="@+id/newQuestion"
+        android:id="@+id/question"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
@@ -31,9 +31,9 @@
         android:hint="@string/new_q" />
 
     <EditText
-        android:id="@+id/newAnswer"
+        android:id="@+id/answer"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
@@ -42,33 +42,6 @@
         android:layout_marginEnd="30dp"
         android:gravity="center"
         android:hint="@string/new_a" />
-
-
-    <EditText
-        android:id="@+id/wrongAnswer1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="325dp"
-        android:layout_marginEnd="30dp"
-        android:gravity="center"
-        android:hint="@string/wrong" />
-
-    <EditText
-        android:id="@+id/wrongAnswer2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="450dp"
-        android:layout_marginEnd="30dp"
-        android:gravity="center"
-        android:hint="@string/wrong" />
 
     <ImageView
         android:id="@+id/save"

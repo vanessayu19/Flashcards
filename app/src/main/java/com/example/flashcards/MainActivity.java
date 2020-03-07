@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -95,7 +96,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
         findViewById(R.id.answer2).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -111,7 +111,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
         findViewById(R.id.answer3).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -128,12 +127,29 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // go to a new page
+        // create a new card
         findViewById(R.id.add).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, AddCardActivity.class);
                 MainActivity.this.startActivityForResult(intent,1);
+            }
+        });
+
+        // edit current card
+        findViewById(R.id.edit).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, EditCurrentCardActivity.class);
+
+                // send current question and answer
+                String qData = ((TextView) findViewById(R.id.flashcard_question)).getText().toString();
+                intent.putExtra("qText", qData);
+
+                String aData = ((TextView) findViewById(R.id.flashcard_answer)).getText().toString();
+                intent.putExtra("aText", aData);
+
+                MainActivity.this.startActivityForResult(intent, 2);
             }
         });
     };
@@ -156,6 +172,17 @@ public class MainActivity extends AppCompatActivity {
 
             // display Snackbar notification
             Snackbar.make(findViewById(R.id.flashcard_question), "New card successfully created!",
+                    Snackbar.LENGTH_SHORT).show();
+        } else if (requestCode == 2 && resultCode == RESULT_OK){
+            String newQ = data.getExtras().getString("newQ");
+            ((TextView) findViewById(R.id.flashcard_question)).setText(newQ);
+
+            String newA = data.getExtras().getString("newA");
+            ((TextView) findViewById(R.id.flashcard_answer)).setText(newA);
+            ((TextView) findViewById(R.id.answer1)).setText(newA);
+
+            // display Snackbar notification
+            Snackbar.make(findViewById(R.id.flashcard_question), "Card successfully updated!",
                     Snackbar.LENGTH_SHORT).show();
         }
     }

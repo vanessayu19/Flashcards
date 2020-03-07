@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 public class AddCardActivity extends AppCompatActivity {
 
     @Override
@@ -31,10 +33,13 @@ public class AddCardActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String qData = ((EditText) findViewById(R.id.newQuestion)).getText().toString();
                 String aData = ((EditText) findViewById(R.id.newAnswer)).getText().toString();
+                String w1Data = ((EditText) findViewById(R.id.wrongAnswer1)).getText().toString();
+                String w2Data = ((EditText) findViewById(R.id.wrongAnswer2)).getText().toString();
 
-                if (TextUtils.isEmpty(qData) || TextUtils.isEmpty((aData))) {
+                if (TextUtils.isEmpty(qData) || TextUtils.isEmpty(aData) ||
+                        TextUtils.isEmpty(w1Data) || TextUtils.isEmpty(w2Data)) {
                     Toast message = Toast.makeText(
-                            getApplicationContext(), "Must fill in both Question and Answer!",
+                            getApplicationContext(), "Must fill in both Question and Answers!",
                             Toast.LENGTH_SHORT);
                     // message.setGravity(Gravity.BOTTOM|Gravity.CENTER, 0, 0);
                     message.show();
@@ -44,6 +49,8 @@ public class AddCardActivity extends AppCompatActivity {
 
                     data.putExtra("newQ", qData);
                     data.putExtra("newA", aData);
+                    data.putExtra("wrong1", w1Data);
+                    data.putExtra("wrong2", w2Data);
                     setResult(RESULT_OK, data);
                     finish();
                 }

@@ -8,4 +8,5 @@
     <string name="answer3">Barack Obama</string>
     <string name="new_q">"Enter Question Here"</string>
     <string name="new_a">"Enter Answer Here"</string>
+    <string name='wrong'>"Enter Wrong Answer Here</string>
 </resources>
