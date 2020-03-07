@@ -146,6 +146,13 @@ public class MainActivity extends AppCompatActivity {
 
             String newA = data.getExtras().getString("newA");
             ((TextView) findViewById(R.id.flashcard_answer)).setText(newA);
+            ((TextView) findViewById(R.id.answer1)).setText(newA);
+
+            String wrong1 = data.getExtras().getString("wrong1");
+            ((TextView) findViewById(R.id.answer2)).setText(wrong1);
+
+            String wrong2 = data.getExtras().getString("wrong2");
+            ((TextView) findViewById(R.id.answer3)).setText(wrong2);
 
             // display Snackbar notification
             Snackbar.make(findViewById(R.id.flashcard_question), "New card successfully created!",
