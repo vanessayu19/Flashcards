@@ -23,7 +23,7 @@ public class EditCurrentCardActivity extends AppCompatActivity {
         ((EditText) findViewById(R.id.question)).setText(currentQ);
         ((EditText) findViewById(R.id.answer)).setText(currentA);
 
-        // close out of new page
+        // close edit card page
         findViewById(R.id.close).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -36,18 +36,18 @@ public class EditCurrentCardActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // create data to send back when this activity is closed
-                Intent intent = new Intent();
-                String qData = ((EditText) findViewById(R.id.newQuestion)).getText().toString();
-                String aData = ((EditText) findViewById(R.id.newAnswer)).getText().toString();
+                String qData = ((EditText) findViewById(R.id.question)).getText().toString();
+                String aData = ((EditText) findViewById(R.id.answer)).getText().toString();
 
                 // check that both EditText views are populated
                 if (TextUtils.isEmpty(qData) || TextUtils.isEmpty(aData)){
                     Toast message = Toast.makeText(getApplicationContext(),
-                            "Must answer both Question and Answer!",Toast.LENGTH_SHORT);
+                            "Must answer both Question and Answer!", Toast.LENGTH_SHORT);
                     // default is bottom|center, but the line below does this as well
                     // message.setGravity(Gravity.BOTTOM|Gravity.CENTER,0,0);
                     message.show();
                 } else {
+                    Intent intent = new Intent();
                     intent.putExtra("newQ", qData);
                     intent.putExtra("newA", aData);
                     setResult(RESULT_OK, intent);
