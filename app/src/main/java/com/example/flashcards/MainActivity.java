@@ -1,31 +1,46 @@
 package com.example.flashcards;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.snackbar.Snackbar;
 
-import org.w3c.dom.Text;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+
+    // Flashcard database and a list to hold all the flashcards
+    FlashcardDatabase flashcardDatabase;
+    List<Flashcard> allFlashcards; // to access all flashcards
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        flashcardDatabase = new FlashcardDatabase(getApplicationContext()); // initialize flashcardDatabase instance
+        allFlashcards = flashcardDatabase.getAllCards(); // access cards
+
+        // check if there are saved flashcards to display
+        if (allFlashcards != null && allFlashcards.size() > 0) {
+            ((TextView) findViewById(R.id.flashcard_question)).setText(allFlashcards.get(0).getQuestion());
+            ((TextView) findViewById(R.id.flashcard_answer)).setText(allFlashcards.get(0).getAnswer());
+            ((TextView) findViewById(R.id.answer1)).setText(allFlashcards.get(0).getAnswer());
+            ((TextView) findViewById(R.id.answer2)).setText(allFlashcards.get(0).getWrongAnswer1());
+            ((TextView) findViewById(R.id.answer3)).setText(allFlashcards.get(0).getWrongAnswer2());
+        }
+
         // click question to show answer
         findViewById(R.id.flashcard_question).setOnClickListener(
             new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Log.d("card", "clikcing question");
+                    Log.d("card", "clicking question");
 
                     findViewById(R.id.flashcard_answer).setVisibility(view.VISIBLE);
                     findViewById(R.id.flashcard_question).setVisibility(view.INVISIBLE);
@@ -158,17 +173,21 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 1 && resultCode == RESULT_OK) {
             String newQ = data.getExtras().getString("newQ");
-            ((TextView) findViewById(R.id.flashcard_question)).setText(newQ);
+            //((TextView) findViewById(R.id.flashcard_question)).setText(newQ);
 
             String newA = data.getExtras().getString("newA");
-            ((TextView) findViewById(R.id.flashcard_answer)).setText(newA);
-            ((TextView) findViewById(R.id.answer1)).setText(newA);
+            //((TextView) findViewById(R.id.flashcard_answer)).setText(newA);
+            //((TextView) findViewById(R.id.answer1)).setText(newA);
 
             String wrong1 = data.getExtras().getString("wrong1");
-            ((TextView) findViewById(R.id.answer2)).setText(wrong1);
+            //((TextView) findViewById(R.id.answer2)).setText(wrong1);
 
             String wrong2 = data.getExtras().getString("wrong2");
-            ((TextView) findViewById(R.id.answer3)).setText(wrong2);
+            //((TextView) findViewById(R.id.answer3)).setText(wrong2);
+
+            // update flashcard database with new card and add to list
+            flashcardDatabase.insertCard(new Flashcard(newQ, newA, wrong1, wrong2));
+            allFlashcards = flashcardDatabase.getAllCards(); // the update variable of all flashcards
 
             // display Snackbar notification
             Snackbar.make(findViewById(R.id.flashcard_question), "New card successfully created!",
