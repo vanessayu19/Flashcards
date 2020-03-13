@@ -6,7 +6,7 @@
 Database implemented, user can now save new cards with mutiple answer choices and click through all flashcards.
 
 ### App Walk-though
-<img src="https://i.imgur.com/vloP8kv.gifv" width=200><br>
+<img src="http://g.recordit.co/SVrkw5221P.gif" width=200><br>
 
 ## Required
 - [X] User can create a card and still see their created card when the app is relaunched.
