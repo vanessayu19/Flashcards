@@ -43,6 +43,32 @@
         android:gravity="center"
         android:hint="@string/new_a" />
 
+    <EditText
+        android:id="@+id/wrongAnswer1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="325dp"
+        android:layout_marginEnd="30dp"
+        android:gravity="center"
+        android:hint="@string/wrong" />
+
+    <EditText
+        android:id="@+id/wrongAnswer2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="450dp"
+        android:layout_marginEnd="30dp"
+        android:gravity="center"
+        android:hint="@string/wrong" />
+
     <ImageView
         android:id="@+id/save"
         android:layout_width="40dp"

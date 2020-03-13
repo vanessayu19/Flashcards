@@ -17,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
     // Flashcard database and a list to hold all the flashcards
     FlashcardDatabase flashcardDatabase;
     List<Flashcard> allFlashcards; // to access all flashcards
+    int currentCardDisplayedIndex = 0; // track what card is being displayed
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("answers", "clicking answer1");
 
                 String ans = ((TextView) findViewById(R.id.answer1)).getText().toString();
-                if (ans.equals(getResources().getString(R.string.card_a))) {
+                if (ans.equals(((TextView)findViewById(R.id.flashcard_answer)).getText().toString())) {
                     // change color to green
                     findViewById(R.id.answer1).setBackgroundColor(getResources().getColor(R.color.pastelGreen));
                 } else {
@@ -117,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("answers", "clicking answer2");
 
                 String ans = ((TextView) findViewById(R.id.answer2)).getText().toString();
-                if (ans.equals(getResources().getString(R.string.card_a))) {
+                if (ans.equals(((TextView)findViewById(R.id.flashcard_answer)).getText().toString())) {
                     // change color to green
                     findViewById(R.id.answer2).setBackgroundColor(getResources().getColor(R.color.pastelGreen));
                 } else {
@@ -132,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("answers", "clicking answer3");
 
                 String ans = ((TextView) findViewById(R.id.answer3)).getText().toString().trim();
-                if (ans.equals(getResources().getString(R.string.card_a))) {
+                if (ans.equals(((TextView)findViewById(R.id.flashcard_answer)).getText().toString())) {
                     // change color to green
                     findViewById(R.id.answer3).setBackgroundColor(getResources().getColor(R.color.pastelGreen));
                 } else {
@@ -164,7 +165,46 @@ public class MainActivity extends AppCompatActivity {
                 String aData = ((TextView) findViewById(R.id.flashcard_answer)).getText().toString();
                 intent.putExtra("aText", aData);
 
+                String w1Data = ((TextView) findViewById(R.id.answer2)).getText().toString();
+                intent.putExtra("w1Text", w1Data);
+
+                String w2Data = ((TextView) findViewById(R.id.answer3)).getText().toString();
+                intent.putExtra("w2Text",w2Data);
+
                 MainActivity.this.startActivityForResult(intent, 2);
+            }
+        });
+
+        // go to next card (if possible)
+        findViewById(R.id.nextCard).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                currentCardDisplayedIndex++;
+
+                // check not out of bounds index
+                if (currentCardDisplayedIndex > allFlashcards.size() - 1){
+                    Log.d("nextCard", "in the if loop");
+                    currentCardDisplayedIndex = 0;
+                }
+
+                if (allFlashcards.size() > 0)
+                {
+                    // set text to question and answer of next card
+                    ((TextView) findViewById(R.id.flashcard_question)).setText(allFlashcards.get(currentCardDisplayedIndex).getQuestion());
+                    ((TextView) findViewById(R.id.flashcard_answer)).setText(allFlashcards.get(currentCardDisplayedIndex).getAnswer());
+                    ((TextView) findViewById(R.id.answer1)).setText(allFlashcards.get(currentCardDisplayedIndex).getAnswer());
+                    ((TextView) findViewById(R.id.answer2)).setText(allFlashcards.get(currentCardDisplayedIndex).getWrongAnswer1());
+                    ((TextView) findViewById(R.id.answer3)).setText(allFlashcards.get(currentCardDisplayedIndex).getWrongAnswer2());
+
+                    // display question side
+                    findViewById(R.id.flashcard_answer).setVisibility(View.INVISIBLE);
+                    findViewById(R.id.flashcard_question).setVisibility(View.VISIBLE);
+
+                    // reset all answer options
+
+                }
+
+
             }
         });
     };
@@ -173,32 +213,45 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 1 && resultCode == RESULT_OK) {
             String newQ = data.getExtras().getString("newQ");
-            //((TextView) findViewById(R.id.flashcard_question)).setText(newQ);
-
-            String newA = data.getExtras().getString("newA");
-            //((TextView) findViewById(R.id.flashcard_answer)).setText(newA);
-            //((TextView) findViewById(R.id.answer1)).setText(newA);
-
-            String wrong1 = data.getExtras().getString("wrong1");
-            //((TextView) findViewById(R.id.answer2)).setText(wrong1);
-
-            String wrong2 = data.getExtras().getString("wrong2");
-            //((TextView) findViewById(R.id.answer3)).setText(wrong2);
-
-            // update flashcard database with new card and add to list
-            flashcardDatabase.insertCard(new Flashcard(newQ, newA, wrong1, wrong2));
-            allFlashcards = flashcardDatabase.getAllCards(); // the update variable of all flashcards
-
-            // display Snackbar notification
-            Snackbar.make(findViewById(R.id.flashcard_question), "New card successfully created!",
-                    Snackbar.LENGTH_SHORT).show();
-        } else if (requestCode == 2 && resultCode == RESULT_OK){
-            String newQ = data.getExtras().getString("newQ");
             ((TextView) findViewById(R.id.flashcard_question)).setText(newQ);
 
             String newA = data.getExtras().getString("newA");
             ((TextView) findViewById(R.id.flashcard_answer)).setText(newA);
             ((TextView) findViewById(R.id.answer1)).setText(newA);
+
+            String wrong1 = data.getExtras().getString("wrong1");
+            ((TextView) findViewById(R.id.answer2)).setText(wrong1);
+
+            String wrong2 = data.getExtras().getString("wrong2");
+            ((TextView) findViewById(R.id.answer3)).setText(wrong2);
+
+            // update flashcard database with new card and add to list
+            flashcardDatabase.insertCard(new Flashcard(newQ, newA, wrong1, wrong2));
+            allFlashcards = flashcardDatabase.getAllCards(); // update the variable of all flashcards
+
+            // display Snackbar notification
+            Snackbar.make(findViewById(R.id.flashcard_question), "New card successfully created!",
+                    Snackbar.LENGTH_SHORT).show();
+        } else if (requestCode == 2 && resultCode == RESULT_OK){
+            String newQ = data.getExtras().getString("newQ"); // get data
+            ((TextView) findViewById(R.id.flashcard_question)).setText(newQ); // set into current/displayed card
+            allFlashcards.get(currentCardDisplayedIndex).setQuestion(newQ); // update database
+
+            String newA = data.getExtras().getString("newA");
+            ((TextView) findViewById(R.id.flashcard_answer)).setText(newA);
+            ((TextView) findViewById(R.id.answer1)).setText(newA);
+            allFlashcards.get(currentCardDisplayedIndex).setAnswer(newA);
+
+            String newWrong1 = data.getExtras().getString("newW1");
+            ((TextView) findViewById(R.id.answer2)).setText(newWrong1);
+            allFlashcards.get(currentCardDisplayedIndex).setWrongAnswer1(newWrong1);
+
+            String newWrong2 = data.getExtras().getString("newW2");
+            ((TextView) findViewById(R.id.answer3)).setText(newWrong2);
+            allFlashcards.get(currentCardDisplayedIndex).setWrongAnswer2(newWrong2);
+
+            //update allFlashcards
+            //allFlashcards = flashcardDatabase.getAllCards();
 
             // display Snackbar notification
             Snackbar.make(findViewById(R.id.flashcard_question), "Card successfully updated!",

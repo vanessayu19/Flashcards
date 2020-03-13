@@ -1,13 +1,13 @@
 package com.example.flashcards;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class EditCurrentCardActivity extends AppCompatActivity {
 
@@ -16,12 +16,16 @@ public class EditCurrentCardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_current_card);
 
-        // paste current question and answer from intent into EditText
+        // paste current question and answers from intent into EditText
         String currentQ = getIntent().getStringExtra("qText");
         String currentA = getIntent().getStringExtra("aText");
+        String currentw1 = getIntent().getStringExtra("w1Text");
+        String currentw2 = getIntent().getStringExtra("w2Text");
 
         ((EditText) findViewById(R.id.question)).setText(currentQ);
         ((EditText) findViewById(R.id.answer)).setText(currentA);
+        ((EditText) findViewById(R.id.wrongAnswer1)).setText(currentw1);
+        ((EditText) findViewById(R.id.wrongAnswer2)).setText(currentw2);
 
         // close edit card page
         findViewById(R.id.close).setOnClickListener(new View.OnClickListener() {
@@ -38,6 +42,8 @@ public class EditCurrentCardActivity extends AppCompatActivity {
                 // create data to send back when this activity is closed
                 String qData = ((EditText) findViewById(R.id.question)).getText().toString();
                 String aData = ((EditText) findViewById(R.id.answer)).getText().toString();
+                String w1Data = ((EditText) findViewById(R.id.wrongAnswer1)).getText().toString();
+                String w2Data = ((EditText) findViewById(R.id.wrongAnswer2)).getText().toString();
 
                 // check that both EditText views are populated
                 if (TextUtils.isEmpty(qData) || TextUtils.isEmpty(aData)){
@@ -50,6 +56,8 @@ public class EditCurrentCardActivity extends AppCompatActivity {
                     Intent intent = new Intent();
                     intent.putExtra("newQ", qData);
                     intent.putExtra("newA", aData);
+                    intent.putExtra("newW1", w1Data);
+                    intent.putExtra("newW2", w2Data);
                     setResult(RESULT_OK, intent);
                     finish();
                 }
