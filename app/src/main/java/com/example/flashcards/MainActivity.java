@@ -1,9 +1,13 @@
 package com.example.flashcards;
 
+import android.animation.Animator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewAnimationUtils;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -43,8 +47,25 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View view) {
                     Log.d("card", "clicking question");
 
-                    findViewById(R.id.flashcard_answer).setVisibility(view.VISIBLE);
-                    findViewById(R.id.flashcard_question).setVisibility(view.INVISIBLE);
+                    View answerSideView = findViewById(R.id.flashcard_answer);
+                    View questionSideView = findViewById(R.id.flashcard_question);
+
+                    // get the center for the clipping circle
+                    int cx = answerSideView.getWidth() / 2;
+                    int cy = answerSideView.getHeight() / 2;
+
+                    // get the final radius for the clipping circle
+                    float finalRadius = (float) Math.hypot(cx, cy);
+
+                    // create the animator for this view (the start radius is zero)
+                    Animator anim = ViewAnimationUtils.createCircularReveal(answerSideView, cx, cy, 0f, finalRadius);
+
+                    // hide the question and show the answer to prepare for playing the animation!
+                    questionSideView.setVisibility(View.INVISIBLE);
+                    answerSideView.setVisibility(View.VISIBLE);
+
+                    anim.setDuration(1500); // how the animation will take
+                    anim.start(); // this runs the whole animation
                 }
             }
         );
@@ -149,6 +170,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, AddCardActivity.class);
                 MainActivity.this.startActivityForResult(intent,1);
+                overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                    // enter animation for new activity, exit animation for prev activity
             }
         });
 
@@ -172,6 +195,7 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("w2Text",w2Data);
 
                 MainActivity.this.startActivityForResult(intent, 2);
+                // left in, right out animations
             }
         });
 
@@ -180,6 +204,36 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 currentCardDisplayedIndex++;
+                final Animation leftOutAnim = AnimationUtils.loadAnimation(v.getContext(), R.anim.left_out);
+                final Animation rightInAnim = AnimationUtils.loadAnimation(v.getContext(), R.anim.right_in);
+
+                leftOutAnim.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+                        // this method is called when the animation first starts
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+
+                        // this method is called when the animation is finished playing
+                        findViewById(R.id.flashcard_question).startAnimation(rightInAnim);
+
+                        // set text to question and answer of next card
+                        ((TextView) findViewById(R.id.flashcard_question)).setText(allFlashcards.get(currentCardDisplayedIndex).getQuestion());
+                        ((TextView) findViewById(R.id.flashcard_answer)).setText(allFlashcards.get(currentCardDisplayedIndex).getAnswer());
+                        ((TextView) findViewById(R.id.answer1)).setText(allFlashcards.get(currentCardDisplayedIndex).getAnswer());
+                        ((TextView) findViewById(R.id.answer2)).setText(allFlashcards.get(currentCardDisplayedIndex).getWrongAnswer1());
+                        ((TextView) findViewById(R.id.answer3)).setText(allFlashcards.get(currentCardDisplayedIndex).getWrongAnswer2());
+
+                        // reset all answer options
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+                        // we don't need to worry about this method
+                    }
+                });
 
                 // check not out of bounds index
                 if (currentCardDisplayedIndex > allFlashcards.size() - 1){
@@ -189,19 +243,11 @@ public class MainActivity extends AppCompatActivity {
 
                 if (allFlashcards.size() > 0)
                 {
-                    // set text to question and answer of next card
-                    ((TextView) findViewById(R.id.flashcard_question)).setText(allFlashcards.get(currentCardDisplayedIndex).getQuestion());
-                    ((TextView) findViewById(R.id.flashcard_answer)).setText(allFlashcards.get(currentCardDisplayedIndex).getAnswer());
-                    ((TextView) findViewById(R.id.answer1)).setText(allFlashcards.get(currentCardDisplayedIndex).getAnswer());
-                    ((TextView) findViewById(R.id.answer2)).setText(allFlashcards.get(currentCardDisplayedIndex).getWrongAnswer1());
-                    ((TextView) findViewById(R.id.answer3)).setText(allFlashcards.get(currentCardDisplayedIndex).getWrongAnswer2());
-
                     // display question side
                     findViewById(R.id.flashcard_answer).setVisibility(View.INVISIBLE);
                     findViewById(R.id.flashcard_question).setVisibility(View.VISIBLE);
 
-                    // reset all answer options
-
+                    findViewById(R.id.flashcard_question).startAnimation(leftOutAnim);
                 }
 
 
