@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.plattysoft.leonids.ParticleSystem;
 
 import java.util.List;
 
@@ -182,8 +183,12 @@ public class MainActivity extends AppCompatActivity {
                 String ans = ((TextView) findViewById(R.id.answer1)).getText().toString();
                 if (ans.equals(((TextView)findViewById(R.id.flashcard_answer)).getText().toString())) {
                     // change color to green
-                    // findViewById(R.id.answer1).setBackgroundColor(getResources().getColor(R.color.pastelGreen));
                     findViewById(R.id.answer1).setBackgroundDrawable(getDrawable(R.drawable.correct_answer_background));
+
+                    // confetti animation
+                    new ParticleSystem(MainActivity.this, 100, R.drawable.confetti, 3000)
+                            .setSpeedRange(0.2f, 0.5f)
+                            .oneShot(findViewById(R.id.answer1), 100);
                 } else {
                     // change color to red
                     findViewById(R.id.answer1).setBackgroundDrawable(getDrawable(R.drawable.wrong_answer_background));
@@ -199,6 +204,11 @@ public class MainActivity extends AppCompatActivity {
                 if (ans.equals(((TextView)findViewById(R.id.flashcard_answer)).getText().toString())) {
                     // change color to green
                     findViewById(R.id.answer2).setBackgroundDrawable(getDrawable(R.drawable.correct_answer_background));
+
+                    // confetti animation
+                    new ParticleSystem(MainActivity.this, 100, R.drawable.confetti, 3000)
+                            .setSpeedRange(0.2f, 0.5f)
+                            .oneShot(findViewById(R.id.answer2), 100);
                 } else {
                     // change color to red
                     findViewById(R.id.answer2).setBackgroundDrawable(getDrawable(R.drawable.wrong_answer_background));
@@ -214,6 +224,11 @@ public class MainActivity extends AppCompatActivity {
                 if (ans.equals(((TextView)findViewById(R.id.flashcard_answer)).getText().toString())) {
                     // change color to green
                     findViewById(R.id.answer3).setBackgroundDrawable(getDrawable(R.drawable.correct_answer_background));
+
+                    // confetti animation
+                    new ParticleSystem(MainActivity.this, 100, R.drawable.confetti, 3000)
+                            .setSpeedRange(0.2f, 0.5f)
+                            .oneShot(findViewById(R.id.answer3), 100);
                 } else {
                     // change color to red
                     findViewById(R.id.answer3).setBackgroundDrawable(getDrawable(R.drawable.wrong_answer_background));
