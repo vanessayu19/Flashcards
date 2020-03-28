@@ -3,6 +3,7 @@ package com.example.flashcards;
 import android.animation.Animator;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewAnimationUtils;
@@ -22,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     FlashcardDatabase flashcardDatabase;
     List<Flashcard> allFlashcards; // to access all flashcards
     int currentCardDisplayedIndex = 0; // track what card is being displayed
+    CountDownTimer countDownTimer; // timer variable
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +41,16 @@ public class MainActivity extends AppCompatActivity {
             ((TextView) findViewById(R.id.answer2)).setText(allFlashcards.get(0).getWrongAnswer1());
             ((TextView) findViewById(R.id.answer3)).setText(allFlashcards.get(0).getWrongAnswer2());
         }
+
+        // initialize timer - 20 seconds
+        countDownTimer = new CountDownTimer(21000, 1000) {
+            public void onTick(long millisUntilFinished) {
+                ((TextView) findViewById(R.id.timer)).setText("" + millisUntilFinished / 1000);
+            }
+
+            public void onFinish() {}
+        };
+        startTimer();
 
         // click question to show answer
         findViewById(R.id.flashcard_question).setOnClickListener(
@@ -126,10 +138,11 @@ public class MainActivity extends AppCompatActivity {
                 String ans = ((TextView) findViewById(R.id.answer1)).getText().toString();
                 if (ans.equals(((TextView)findViewById(R.id.flashcard_answer)).getText().toString())) {
                     // change color to green
-                    findViewById(R.id.answer1).setBackgroundColor(getResources().getColor(R.color.pastelGreen));
+                    // findViewById(R.id.answer1).setBackgroundColor(getResources().getColor(R.color.pastelGreen));
+                    findViewById(R.id.answer1).setBackgroundDrawable(getDrawable(R.drawable.correct_answer_background));
                 } else {
                     // change color to red
-                    findViewById(R.id.answer1).setBackgroundColor(getResources().getColor(R.color.errorRed));
+                    findViewById(R.id.answer1).setBackgroundDrawable(getDrawable(R.drawable.wrong_answer_background));
                 }
             }
         });
@@ -141,10 +154,10 @@ public class MainActivity extends AppCompatActivity {
                 String ans = ((TextView) findViewById(R.id.answer2)).getText().toString();
                 if (ans.equals(((TextView)findViewById(R.id.flashcard_answer)).getText().toString())) {
                     // change color to green
-                    findViewById(R.id.answer2).setBackgroundColor(getResources().getColor(R.color.pastelGreen));
+                    findViewById(R.id.answer2).setBackgroundDrawable(getDrawable(R.drawable.correct_answer_background));
                 } else {
                     // change color to red
-                    findViewById(R.id.answer2).setBackgroundColor(getResources().getColor(R.color.errorRed));
+                    findViewById(R.id.answer2).setBackgroundDrawable(getDrawable(R.drawable.wrong_answer_background));
                 }
             }
         });
@@ -156,10 +169,10 @@ public class MainActivity extends AppCompatActivity {
                 String ans = ((TextView) findViewById(R.id.answer3)).getText().toString().trim();
                 if (ans.equals(((TextView)findViewById(R.id.flashcard_answer)).getText().toString())) {
                     // change color to green
-                    findViewById(R.id.answer3).setBackgroundColor(getResources().getColor(R.color.pastelGreen));
+                    findViewById(R.id.answer3).setBackgroundDrawable(getDrawable(R.drawable.correct_answer_background));
                 } else {
                     // change color to red
-                    findViewById(R.id.answer3).setBackgroundColor(getResources().getColor(R.color.errorRed));
+                    findViewById(R.id.answer3).setBackgroundDrawable(getDrawable(R.drawable.wrong_answer_background));
                 }
             }
         });
@@ -171,7 +184,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, AddCardActivity.class);
                 MainActivity.this.startActivityForResult(intent,1);
                 overridePendingTransition(R.anim.right_in, R.anim.left_out);
-                    // enter animation for new activity, exit animation for prev activity
+                    // (/enter animation for new activity, exit animation for prev activity)
             }
         });
 
@@ -195,7 +208,8 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("w2Text",w2Data);
 
                 MainActivity.this.startActivityForResult(intent, 2);
-                // left in, right out animations
+                overridePendingTransition(R.anim.right_out, R.anim.left_in);
+                // (enter animation for new activity, exit animation for prev activity)
             }
         });
 
@@ -215,7 +229,6 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void onAnimationEnd(Animation animation) {
-
                         // this method is called when the animation is finished playing
                         findViewById(R.id.flashcard_question).startAnimation(rightInAnim);
 
@@ -227,12 +240,14 @@ public class MainActivity extends AppCompatActivity {
                         ((TextView) findViewById(R.id.answer3)).setText(allFlashcards.get(currentCardDisplayedIndex).getWrongAnswer2());
 
                         // reset all answer options
+                        findViewById(R.id.answer1).setBackgroundDrawable(getDrawable(R.drawable.answer_option_background));
+                        findViewById(R.id.answer2).setBackgroundDrawable(getDrawable(R.drawable.answer_option_background));
+                        findViewById(R.id.answer3).setBackgroundDrawable(getDrawable(R.drawable.answer_option_background));
                     }
 
                     @Override
-                    public void onAnimationRepeat(Animation animation) {
-                        // we don't need to worry about this method
-                    }
+                    public void onAnimationRepeat(Animation animation) { }
+
                 });
 
                 // check not out of bounds index
@@ -247,9 +262,10 @@ public class MainActivity extends AppCompatActivity {
                     findViewById(R.id.flashcard_answer).setVisibility(View.INVISIBLE);
                     findViewById(R.id.flashcard_question).setVisibility(View.VISIBLE);
 
+                    // change the card animation
                     findViewById(R.id.flashcard_question).startAnimation(leftOutAnim);
+                    startTimer();
                 }
-
 
             }
         });
@@ -297,11 +313,17 @@ public class MainActivity extends AppCompatActivity {
             allFlashcards.get(currentCardDisplayedIndex).setWrongAnswer2(newWrong2);
 
             //update allFlashcards
-            //allFlashcards = flashcardDatabase.getAllCards();
+            flashcardDatabase.updateCard(allFlashcards.get(currentCardDisplayedIndex));
 
             // display Snackbar notification
             Snackbar.make(findViewById(R.id.flashcard_question), "Card successfully updated!",
                     Snackbar.LENGTH_SHORT).show();
         }
+    }
+
+    // to start each timer (when a  new card is shown)
+    private void startTimer() {
+        countDownTimer.cancel(); // stop previous timer
+        countDownTimer.start(); // start new countdown
     }
 }
