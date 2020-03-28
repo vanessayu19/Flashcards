@@ -1,12 +1,10 @@
 package com.example.flashcards;
 
-import android.animation.Animator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewAnimationUtils;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
@@ -59,9 +57,32 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View view) {
                     Log.d("card", "clicking question");
 
-                    View answerSideView = findViewById(R.id.flashcard_answer);
-                    View questionSideView = findViewById(R.id.flashcard_question);
+                    final View answerSideView = findViewById(R.id.flashcard_answer);
+                    final View questionSideView = findViewById(R.id.flashcard_question);
+                    answerSideView.setCameraDistance(2000000);
+                    questionSideView.setCameraDistance(2000000);
 
+                    questionSideView.animate()
+                            .rotationY(90) // flip the question to hidden
+                            .setDuration(350)
+                            .withEndAction( // chaining the two animations together
+                                    new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            questionSideView.setVisibility(View.INVISIBLE);
+                                            answerSideView.setVisibility(View.VISIBLE);
+
+                                            // second quarter turn - flip answer to visible
+                                            answerSideView.setRotationY(-90);
+                                            answerSideView.animate()
+                                                    .rotationY(0)
+                                                    .setDuration(350)
+                                                    .start();
+                                        }
+                                    }
+                            ).start();
+
+                    /* circular animation to show answer side - not used
                     // get the center for the clipping circle
                     int cx = answerSideView.getWidth() / 2;
                     int cy = answerSideView.getHeight() / 2;
@@ -78,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
 
                     anim.setDuration(1500); // how the animation will take
                     anim.start(); // this runs the whole animation
+                     */
                 }
             }
         );
@@ -89,8 +111,30 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View view) {
                     Log.d("card", "clicking answer");
 
-                    findViewById(R.id.flashcard_answer).setVisibility(view.INVISIBLE);
-                    findViewById(R.id.flashcard_question).setVisibility(view.VISIBLE);
+                    final View answerSideView = findViewById(R.id.flashcard_answer);
+                    final View questionSideView = findViewById(R.id.flashcard_question);
+                    answerSideView.setCameraDistance(2000000);
+                    questionSideView.setCameraDistance(2000000);
+
+                    answerSideView.animate()
+                            .rotationY(-90) // flip the question to hidden
+                            .setDuration(350)
+                            .withEndAction( // chaining the two animations together
+                                    new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            answerSideView.setVisibility(View.INVISIBLE);
+                                            questionSideView.setVisibility(View.VISIBLE);
+
+                                            // second quarter turn - flip answer to visible
+                                            questionSideView.setRotationY(90);
+                                            questionSideView.animate()
+                                                    .rotationY(0)
+                                                    .setDuration(350)
+                                                    .start();
+                                        }
+                                    }
+                            ).start();
                 }
             }
         );
@@ -259,8 +303,32 @@ public class MainActivity extends AppCompatActivity {
                 if (allFlashcards.size() > 0)
                 {
                     // display question side
-                    findViewById(R.id.flashcard_answer).setVisibility(View.INVISIBLE);
-                    findViewById(R.id.flashcard_question).setVisibility(View.VISIBLE);
+                    if (findViewById(R.id.flashcard_question).getVisibility() != View.VISIBLE) {
+                        final View answerSideView = findViewById(R.id.flashcard_answer);
+                        final View questionSideView = findViewById(R.id.flashcard_question);
+                        answerSideView.setCameraDistance(2000000);
+                        questionSideView.setCameraDistance(2000000);
+
+                        answerSideView.animate()
+                                .rotationY(-90) // flip the question to hidden
+                                .setDuration(1)
+                                .withEndAction( // chaining the two animations together
+                                        new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                answerSideView.setVisibility(View.INVISIBLE);
+                                                questionSideView.setVisibility(View.VISIBLE);
+
+                                                // second quarter turn - flip answer to visible
+                                                questionSideView.setRotationY(1);
+                                                questionSideView.animate()
+                                                        .rotationY(0)
+                                                        .setDuration(150)
+                                                        .start();
+                                            }
+                                        }
+                                ).start();
+                    }
 
                     // change the card animation
                     findViewById(R.id.flashcard_question).startAnimation(leftOutAnim);
