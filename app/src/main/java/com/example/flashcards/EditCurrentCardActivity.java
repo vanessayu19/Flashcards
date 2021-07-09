@@ -32,7 +32,7 @@ public class EditCurrentCardActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 finish(); // dismisses this current activity
-                overridePendingTransition(R.anim.left_out, R.anim.right_in);
+                overridePendingTransition(R.anim.right_in, R.anim.left_out);
             }
         });
 
@@ -61,7 +61,7 @@ public class EditCurrentCardActivity extends AppCompatActivity {
                     intent.putExtra("newW2", w2Data);
                     setResult(RESULT_OK, intent);
                     finish();
-                    overridePendingTransition(R.anim.left_out, R.anim.right_in);
+                    overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 }
             }
         });
